@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User
+    participant MainProgram
+    participant Operations
+    participant DataProgram
+
+    User->>MainProgram: Selects menu option
+    MainProgram->>Operations: CALL 'Operations' USING OPERATION-TYPE
+    Operations->>DataProgram: CALL 'DataProgram' USING 'READ', FINAL-BALANCE
+    alt Credit
+        Operations->>User: Prompt for credit amount
+        User->>Operations: Enter amount
+        Operations->>DataProgram: CALL 'DataProgram' USING 'WRITE', FINAL-BALANCE+AMOUNT
+        Operations->>User: Display new balance
+    else Debit
+        Operations->>User: Prompt for debit amount
+        User->>Operations: Enter amount
+        Operations->>DataProgram: CALL 'DataProgram' USING 'WRITE', FINAL-BALANCE-AMOUNT
+        Operations->>User: Display new balance or error
+    else View Balance
+        Operations->>User: Display current balance
+    end
+    MainProgram->>User: Display exit message (if chosen)
